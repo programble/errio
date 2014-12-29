@@ -126,7 +126,7 @@ exports.fromObject = function(object, callOptions) {
   for (var prop in object) {
     // Recurse if nested object has name and message properties.
     if (options.recursive && typeof object[prop] === 'object') {
-      var nested = error[prop];
+      var nested = object[prop];
       if (nested.name && nested.message) {
         error[prop] = exports.fromObject(nested, callOptions);
         continue;
