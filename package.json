@@ -13,7 +13,8 @@
   "keywords": [
     "error",
     "serialization",
-    "deserialization"
+    "deserialization",
+    "json"
   ],
   "author": "Curtis McEnroe <curtis@cmcenroe.me> (http://cmcenroe.me)",
   "license": "ISC",
