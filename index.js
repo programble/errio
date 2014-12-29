@@ -2,7 +2,7 @@
 
 // Default options for all serializations.
 var defaultOptions = {
-  recursive: true, // Recursively call toObject on nested errors
+  recursive: true, // Recursively serialize and deserialize nested errors
   inherited: true, // Include inherited properties
   stack: false,    // Include stack property
   private: false,  // Include properties with leading or trailing underscores
@@ -52,13 +52,10 @@ exports.registerAll([
 exports.toObject = function(error, callOptions) {
   callOptions = callOptions || {};
 
-  if (!errors[error.name]) {
-    exports.register(error.constructor, callOptions);
-  }
+  if (!errors[error.name]) exports.register(error.constructor, callOptions);
 
   var errorOptions = errors[error.name].options;
   var options = {};
-
   for (var key in defaultOptions) {
     if (callOptions.hasOwnProperty(key)) options[key] = callOptions[key];
     else if (errorOptions.hasOwnProperty(key)) options[key] = errorOptions[key];
@@ -103,11 +100,49 @@ exports.toObject = function(error, callOptions) {
   return object;
 };
 
-// Deserialize a plain object to an instance of a registered error constructor.
-// If the specific constructor is not registered, return a generic Error
-// instance. If stack was not serialized, capture a new stack trace if
-// possible.
-exports.fromObject = function(object) {
+// Deserialize a plain object to an instance of a registered error constructor
+// with option overrides.  If the specific constructor is not registered,
+// return a generic Error instance. If stack was not serialized, capture a new
+// stack trace.
+exports.fromObject = function(object, callOptions) {
+  callOptions = callOptions || {};
+
+  var registration = errors[object.name];
+  if (!registration) registration = errors.Error;
+
+  var constructor = registration.constructor;
+  var errorOptions = registration.options;
+
+  var options = {};
+  for (var key in defaultOptions) {
+    if (callOptions.hasOwnProperty(key)) options[key] = callOptions[key];
+    else if (errorOptions.hasOwnProperty(key)) options[key] = errorOptions[key];
+    else options[key] = defaultOptions[key];
+  }
+
+  // Instantiate the error without actually calling the constructor.
+  var error = Object.create(constructor.prototype);
+
+  for (var prop in object) {
+    // Recurse if nested object has name and message properties.
+    if (options.recursive && typeof object[prop] === 'object') {
+      var nested = error[prop];
+      if (nested.name && nested.message) {
+        error[prop] = exports.fromObject(nested, callOptions);
+        continue;
+      }
+    }
+
+    error[prop] = object[prop];
+  }
+
+  // Capture a new stack trace such that the first trace line is the caller of
+  // fromObject.
+  if (!error.stack) {
+    Error.captureStackTrace(error, exports.fromObject);
+  }
+
+  return error;
 };
 
 // Serialize an error instance to a JSON string with option overrides.
@@ -116,6 +151,6 @@ exports.stringify = function(error, callOptions) {
 };
 
 // Deserialize a JSON string to an instance of a registered error constructor.
-exports.parse = function(string) {
-  return exports.fromObject(JSON.parse(string));
+exports.parse = function(string, callOptions) {
+  return exports.fromObject(JSON.parse(string), callOptions);
 };
