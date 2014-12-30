@@ -38,9 +38,10 @@ And deserializes JSON back into error instances.
 
 ## Example
 
+Consult the [API Documentation][docs] for details on the functions used.
+
 This example uses [SuperError][super-error], a library for easily
-subclassing errors in Node.js. For details on the functions used, consult the
-[API Documentation][docs].
+subclassing errors in Node.js.
 
 ```javascript
 var Errio = require('errio');
@@ -71,8 +72,7 @@ try {
 } catch (thrown) {
   // Check class as usual.
   if (thrown instanceof MyError) {
-    // And access properties as usual.
-    console.log(thrown.code);
+    console.log(thrown.code); // And access properties as usual.
   }
 }
 ```
