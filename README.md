@@ -128,6 +128,38 @@ Register an array of error constructors with the same option overrides.
 Names cannot be specified in `options`, so all constructors will be
 instantiated to infer their names.
 
+### Errio.toObject(error, options)
+
+Serialize an error instance to a plain object with option overrides.
+
+Passed options take priority over registered error class options and the
+global defaults.
+
+If the class of the error instance has not been registered, it is
+automatically registered with the options passed to the call.
+
+Returned objects always contain `name` and `message` properties.
+
+### Errio.fromObject(object, options)
+
+Deserialize a plain object to an instance of a registered error class.
+
+If the class of the serialized error has no registered constructor,
+return an instance of `Error` with the `name` property set.
+
+If the stack was not serialized, capture a new stack trace from the
+caller.
+
+### Errio.stringify(error, options)
+
+Serialize an error instance to a JSON string. Convenience wrapper for
+`Errio.toObject`.
+
+### Errio.parse(string, options)
+
+Deserialize a JSON string to an instance of a registered error class.
+Convenience wrapper for `Errio.fromObject`.
+
 ## License
 
 Copyright © 2015, Curtis McEnroe <curtis@cmcenroe.me>
