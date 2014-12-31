@@ -33,7 +33,7 @@ And deserializes JSON back into error instances.
 
 ```javascript
 > Errio.parse('{"name":"Error","message":"serialize me"}');
-{ [Error: serialize me] name: 'Error', message: 'serialize me' }
+[Error: serialize me]
 ```
 
 ## Example
