@@ -1,5 +1,9 @@
 # Errio
 
+[![npm](https://img.shields.io/npm/v/errio.svg?style=flat-square)](https://www.npmjs.com/package/errio)
+[![Travis](https://img.shields.io/travis/programble/errio.svg?style=flat-square)](https://travis-ci.org/programble/errio)
+[![Coveralls](https://img.shields.io/coveralls/programble/errio.svg?style=flat-square)](https://coveralls.io/r/programble/errio)
+
 Error serialization and deserialization.
 
 ```
