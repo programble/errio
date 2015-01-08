@@ -85,16 +85,17 @@ exports.toObject = function(error, callOptions) {
         if (prop[0] === '_' || prop[prop.length - 1] === '_') continue;
     }
 
+    var value = error[prop];
+
     // Recurse if nested object has name and message properties.
-    if (options.recursive && typeof error[prop] === 'object') {
-      var nested = error[prop];
-      if (nested.name && nested.message) {
-        object[prop] = exports.toObject(nested, callOptions);
-        continue;
+    if (typeof value === 'object' && value.name && value.message) {
+      if (options.recursive) {
+        object[prop] = exports.toObject(value, callOptions);
       }
+      continue;
     }
 
-    object[prop] = error[prop];
+    object[prop] = value;
   }
 
   return object;
