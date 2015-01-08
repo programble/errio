@@ -1,1 +1,1 @@
-var Errio = require('../index');
+var Errio = require('..');
