@@ -3,9 +3,7 @@ var Errio = require('..');
 
 var common = require('./common');
 
-describe('toObject', function() {
-  it('serializes name and message');
-
+describe('register', function() {
   describe('with option overrides', function() {
     it('sets recursive option');
     it('sets inherited option');
@@ -15,7 +13,12 @@ describe('toObject', function() {
     it('sets include option');
   });
 
-  describe('with unregistered error class', function() {
-    it('registers error class with option overrides');
+  describe('with explicit error name', function() {
+    it('does not call constructor');
+    it('applies options based on name');
+  });
+
+  describe('with already registered error class', function() {
+    it('replaces option overrides');
   });
 });
