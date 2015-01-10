@@ -9,10 +9,12 @@ describe('register', function() {
       var TrueError = SuperError.subclass('RegisterRecursiveTrueTestError');
       Errio.register(TrueError, { recursive: true });
       common.toObject.testRecursiveTrue(TrueError);
+      common.fromObject.testRecursiveTrue(TrueError);
 
       var FalseError = SuperError.subclass('RegisterRecursiveFalseTestError');
       Errio.register(FalseError, { recursive: false });
       common.toObject.testRecursiveFalse(FalseError);
+      common.fromObject.testRecursiveFalse(FalseError);
     });
 
     it('sets inherited option', function() {
