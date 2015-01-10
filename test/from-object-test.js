@@ -51,6 +51,17 @@ describe('fromObject', function() {
     });
   });
 
+  describe('with serialized stack', function() {
+    it('preserves stack', function() {
+      var TestError = SuperError.subclass('FromObjectStackTestError');
+      Errio.register(TestError, { stack: true });
+
+      var object = Errio.toObject(new TestError('test'));
+      var error = Errio.fromObject(object);
+      assert.equal(error.stack, object.stack);
+    });
+  });
+
   describe('with built-in error classes', function() {
     it('returns Error instance', function() {
       var error = Errio.fromObject({ name: 'Error', message: 'test' });
@@ -85,6 +96,17 @@ describe('fromObject', function() {
     it('returns URIError instance', function() {
       var error = Errio.fromObject({ name: 'URIError', message: 'test' });
       assert(error instanceof URIError);
+    });
+  });
+
+  describe('with nested plain object', function() {
+    it('preserves object', function() {
+      var error = Errio.fromObject({
+        name: 'Error',
+        message: 'test',
+        nested: { key: 'value' }
+      });
+      assert.deepEqual(error.nested, { key: 'value' });
     });
   });
 });
