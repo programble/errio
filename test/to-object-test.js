@@ -67,4 +67,16 @@ describe('toObject', function() {
       common.toObject.testStackTrue(TestError);
     });
   });
+
+  describe('with explicitly set stack property', function() {
+    it('does not include stack', function() {
+      var TestError = SuperError.subclass('ToObjectExplicitStackTestError');
+      var error = new TestError('test');
+      delete error.stack;
+      error.stack = 'bogus';
+
+      var object = Errio.toObject(error, { stack: false });
+      assert(!object.hasOwnProperty('stack'), 'does not contain stack property');
+    });
+  });
 });
