@@ -1,3 +1,5 @@
+'use strict';
+
 var SuperError = require('super-error');
 var Errio = require('..');
 
