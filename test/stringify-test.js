@@ -3,8 +3,6 @@ var assert = require('assert');
 var SuperError = require('super-error');
 var Errio = require('..');
 
-var common = require('./common');
-
 describe('stringify', function() {
   it('serializes to a JSON object', function() {
     var json = Errio.stringify(new Error('test'));
