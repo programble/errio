@@ -34,6 +34,29 @@ exports.registerAll = function(constructors, options) {
   });
 };
 
+// Shallow clone a plain object.
+function cloneObject(object) {
+  var clone = {};
+  for (var key in object) {
+    if (object.hasOwnProperty(key)) clone[key] = object[key];
+  }
+  return clone;
+}
+
+// Register a plain object of constructor names mapped to constructors with
+// common option overrides.
+exports.registerObject = function(constructors, commonOptions) {
+  for (var name in constructors) {
+    if (!constructors.hasOwnProperty(name)) continue;
+
+    var constructor = constructors[name];
+    var options = cloneObject(commonOptions);
+    options.name = name;
+
+    exports.register(constructor, options);
+  }
+};
+
 // Register the built-in error constructors.
 exports.registerAll([
   Error,

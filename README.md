@@ -132,6 +132,13 @@ Register an array of error constructors with the same option overrides.
 Names cannot be specified in `options`, so all constructors will be
 instantiated to infer their names.
 
+### Errio.registerObject(constructors, options)
+
+Register a plain object of error names mapped to constructors with the
+same option overrides. Constructors will not be instantiated.
+
+Perfect for registering error classes exported from a module.
+
 ### Errio.toObject(error, options)
 
 Serialize an error instance to a plain object with option overrides.
