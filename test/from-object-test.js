@@ -109,4 +109,15 @@ describe('fromObject', function() {
       assert.deepEqual(error.nested, { key: 'value' });
     });
   });
+
+  describe('with null property value', function() {
+    it('does not try to recurse', function() {
+      var error = Errio.fromObject({
+        name: 'Error',
+        message: 'test',
+        nullValue: null
+      });
+      assert.equal(error.nullValue, null);
+    });
+  });
 });
