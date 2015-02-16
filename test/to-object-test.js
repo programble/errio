@@ -81,4 +81,15 @@ describe('toObject', function() {
       assert(!object.hasOwnProperty('stack'), 'does not contain stack property');
     });
   });
+
+  describe('with null property value', function() {
+    it('does not try to recurse', function() {
+      var TestError = SuperError.subclass('ToObjectNullPropertyValueTestError');
+      var error = new TestError('test');
+      error.nullValue = null;
+
+      var object = Errio.toObject(error, { recursive: true });
+      assert.equal(object.nullValue, null);
+    });
+  });
 });
