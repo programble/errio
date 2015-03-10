@@ -19,11 +19,19 @@ exports.setDefaults = function(options) {
 var errors = {};
 
 // Register an error constructor for serialization and deserialization with
-// option overrides. Name can be specified in options, otherwise name is taken
-// from instantiating the constructor with no arguments.
+// option overrides. Name can be specified in options, otherwise it will be
+// taken from the prototype's name property (if it is not set to Error), the
+// constructor's name property, or the name property of an instance of the
+// constructor.
 exports.register = function(constructor, options) {
   options = options || {};
-  var name = options.name || new constructor().name;
+  var prototypeName = constructor.prototype.name !== 'Error'
+    ? constructor.prototype.name
+    : null;
+  var name = options.name
+    || prototypeName
+    || constructor.name
+    || new constructor().name;
   errors[name] = { constructor: constructor, options: options };
 };
 

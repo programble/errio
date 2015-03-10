@@ -114,8 +114,14 @@ Option keys missing from `options` are left unchanged.
 Register an error constructor for serialization and deserialization with
 option overrides.
 
-The error name can be passed in `options.name`, otherwise it is inferred by
-instantiating the constructor with no arguments.
+The error name will be taken from the first of these that is set:
+
+1. `options.name`
+2. `constructor.prototype.name`, if it is not 'Error'
+3. `constructor.name`
+4. `new constructor().name`
+
+Note that in the last case, the constructor is instantiated with no arguments.
 
 All [built-in error classes][builtins] are automatically registered with
 no option overrides.
