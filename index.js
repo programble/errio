@@ -83,7 +83,11 @@ exports.registerAll([
 exports.toObject = function(error, callOptions) {
   callOptions = callOptions || {};
 
-  if (!errors[error.name]) exports.register(error.constructor, callOptions);
+  if (!errors[error.name]) {
+    // Make sure we register with the name of this instance.
+    callOptions.name = error.name;
+    exports.register(error.constructor, callOptions);
+  }
 
   var errorOptions = errors[error.name].options;
   var options = {};
