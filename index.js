@@ -174,7 +174,7 @@ exports.fromObject = function(object, callOptions) {
 
   // Capture a new stack trace such that the first trace line is the caller of
   // fromObject.
-  if (!error.stack) {
+  if (!error.stack && Error.captureStackTrace) {
     Error.captureStackTrace(error, exports.fromObject);
   }
 
