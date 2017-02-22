@@ -1,6 +1,6 @@
 {
   "name": "errio",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Error serialization and deserialization",
   "main": "index.js",
   "scripts": {
